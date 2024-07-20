@@ -4,12 +4,13 @@ import styles from './styles'
 import { url } from '../../constants/constants'
 import axios from 'axios'
 
-const Search = ({searchDataHandler, setErrorHandler, setSearchHistory}) => {
+const Search = ({searchDataHandler, setErrorHandler, setSearchHistory, loading, setLoading}) => {
   const [text, setText] = useState('')
   const onChangeTextHandler = useCallback((val) => setText(val), [])
-  const [loading, setLoading] = useState(false)
 
   const onSearchHandler = useCallback(() => {
+    if (loading || !text) return
+
     setLoading(true)
     setSearchHistory(prevVal => [...prevVal, text])
     axios.get(`${url}${text.toLowerCase()}`).then(res => {

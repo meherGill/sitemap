@@ -11,6 +11,7 @@ export default function App() {
   const [searchedData, setSearchedData] = useState()
   const [error, setError] = useState(false)
   const [searchHistory, setSearchHistory] = useState([])
+  const [loading, setLoading] = useState(false)
 
   const onSearchHandler = (text) => {
     if (!text) return;
@@ -27,6 +28,13 @@ export default function App() {
           <Text>Something went wrong, the api might be down, try again later</Text>
           </View>
     }
+    
+    else if (loading) {
+      return <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <Text>Loading...</Text>
+        </View>
+    }
+
     else {
       if (!searchedData) return;
 
@@ -42,7 +50,7 @@ export default function App() {
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{flex: 1}}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <SafeAreaView style={styles.container}>
-          <Search searchDataHandler={onSearchHandler} setErrorHandler={setError} setSearchHistory={setSearchHistory}/>
+          <Search searchDataHandler={onSearchHandler} setErrorHandler={setError} setSearchHistory={setSearchHistory} loading={loading} setLoading={setLoading}/>
           <View style={{flex: 1, alignSelf: 'stretch'}}>
             {viewToShow()}
           </View>
